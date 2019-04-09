@@ -45,67 +45,60 @@ function startListening() {
         $('#wins-display').text(Wins);
         $('#losses-display').text(Losses);
         $('#ties-display').text(Ties);
-        console.log(Wins + " " + Losses + " " + Ties);
     })
 }
 
 database.ref('Logic').on('value', function (snap) {
     if (snap.val().GameFinished != null && snap.val().GameFinished != false) {
-        if (snap.val().id1 != localStorage.getItem("User")) {
-            $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice1);
-        }
-        else {
-            $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice2);
-        }
+
+        $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice1);
+        $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice2);
+
         if (snap.val().id1 == localStorage.getItem("User")) {
-            database.ref(localStorage.getItem("User")).once('value').then(function (doubleSnap) {
-                if (snap.val().choice1 == 'rock' && snap.val().choice2 == 'scissor') {
-                    Wins++;
-                }
-                else if (snap.val().choice1 == 'scissors' && snap.val().choice2 == 'paper') {
-                    Wins++;
-                }
-                else if (snap.val().choice1 == 'paper' && snap.val().choice2 == 'rock') {
-                    Wins++;
-                }
-                else if (snap.val().choice1 == 'paper' && snap.val().choice2 == 'paper') {
-                    Ties++;
-                }
-                else if (snap.val().choice1 == 'rock' && snap.val().choice2 == 'rock') {
-                    Ties++;
-                }
-                else if (snap.val().choice1 == 'scissors' && snap.val().choice2 == 'scissors') {
-                    Ties++;
-                }
-                else {
-                    Losses++;
-                }
-            })
+            if (snap.val().choice1 == 'rock' && snap.val().choice2 == 'scissor') {
+                Wins++;
+            }
+            else if (snap.val().choice1 == 'scissors' && snap.val().choice2 == 'paper') {
+                Wins++;
+            }
+            else if (snap.val().choice1 == 'paper' && snap.val().choice2 == 'rock') {
+                Wins++;
+            }
+            else if (snap.val().choice1 == 'paper' && snap.val().choice2 == 'paper') {
+                Ties++;
+            }
+            else if (snap.val().choice1 == 'rock' && snap.val().choice2 == 'rock') {
+                Ties++;
+            }
+            else if (snap.val().choice1 == 'scissors' && snap.val().choice2 == 'scissors') {
+                Ties++;
+            }
+            else {
+                Losses++;
+            }
         }
         if (snap.val().id2 == localStorage.getItem("User")) {
-            database.ref(localStorage.getItem("User")).once('value').then(function (doubleSnap) {
-                if (snap.val().choice2 == 'rock' && snap.val().choice1 == 'scissor') {
-                    Wins++;
-                }
-                else if (snap.val().choice2 == 'scissors' && snap.val().choice1 == 'paper') {
-                    Wins++;
-                }
-                else if (snap.val().choice2 == 'paper' && snap.val().choice1 == 'rock') {
-                    Wins++;
-                }
-                else if (snap.val().choice2 == 'paper' && snap.val().choice1 == 'paper') {
-                    Ties++;
-                }
-                else if (snap.val().choice2 == 'rock' && snap.val().choice1 == 'rock') {
-                    Ties++;
-                }
-                else if (snap.val().choice2 == 'scissors' && snap.val().choice1 == 'scissors') {
-                    Ties++;
-                }
-                else {
-                    Losses++;
-                }
-            })
+            if (snap.val().choice2 == 'rock' && snap.val().choice1 == 'scissor') {
+                Wins++;
+            }
+            else if (snap.val().choice2 == 'scissors' && snap.val().choice1 == 'paper') {
+                Wins++;
+            }
+            else if (snap.val().choice2 == 'paper' && snap.val().choice1 == 'rock') {
+                Wins++;
+            }
+            else if (snap.val().choice2 == 'paper' && snap.val().choice1 == 'paper') {
+                Ties++;
+            }
+            else if (snap.val().choice2 == 'rock' && snap.val().choice1 == 'rock') {
+                Ties++;
+            }
+            else if (snap.val().choice2 == 'scissors' && snap.val().choice1 == 'scissors') {
+                Ties++;
+            }
+            else {
+                Losses++;
+            }
         }
 
 
