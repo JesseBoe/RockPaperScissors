@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>RPS_Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+</head>
+
+<body>
+    <br>
+    <div class="container">
+        <!-- Give this a bottom border for style -->
+        <div class="row">
+            <div class = "col-md-12 d-flex justify-content-center">
+                Rock Paper Scissors
+            </div>
+            <div class = "col-md-6 d-flex justify-content-center">
+                <!-- Image players choice -->
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <p>Your Pick</p>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <i class="fas fa-spinner fa-spin p1" style="font-size: 100px; color: gray;"></i>
+                    </div>
+                </div>
+            </div>
+            <div class = "col-md-6 d-flex justify-content-center">
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <p>Opponents Pick</p>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <i class="fas fa-spinner fa-spin p2" style="font-size: 100px; color: gray;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center">
+                Choose Wisely!
+            </div>
+            <div class="col-md-12 d-flex justify-content-center">
+                <i id = rock class="fa fa-hand-rock ml-4 mr-4 choice" style="font-size: 100px; color: gray;"></i>
+                <i id = paper class="fa fa-hand-paper ml-4 mr-4 choice" style="font-size: 100px; color: gray;"></i>
+                <i id = scissors class="fa fa-hand-scissors ml-4 mr-4 choice" style="font-size: 100px; color: gray;"></i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 d-flex justify-content-center">
+                Wins: <span id = wins-display></span>
+            </div>
+            <div class="col-md-4 d-flex justify-content-center">
+                Losses: <span id = losses-display></span>
+            </div>
+            <div class="col-md-4 d-flex justify-content-center">
+                Ties: <span id = ties-display></span>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="javascript/logic.js"></script>
+</body>
