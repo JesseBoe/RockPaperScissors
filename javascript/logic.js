@@ -55,7 +55,7 @@ function startListening() {
 database.ref('Logic').on('value', function (snap) {
     if (snap.val().GameFinished != null && snap.val().GameFinished != false) {
 
-        $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice1);
+        $(".p1").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice1);
         $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice2);
 
         if (snap.val().id1 == localStorage.getItem("User")) {
