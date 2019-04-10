@@ -1,3 +1,7 @@
 .player-choice .opponent-choice{
     height: 200px;
 }
+
+.chat-display{
+    height: 250px;
+}

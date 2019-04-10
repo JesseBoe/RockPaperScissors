@@ -21,6 +21,10 @@ else {
     startListening();
 }
 
+$('#temp').stop().animate({
+    scrollTop: $('#temp')[0].scrollHeight
+}, 800);
+
 function firstSignIn() {
     firebase.auth().signInAnonymously().then(function () {
         var user = firebase.auth().currentUser;
@@ -111,7 +115,6 @@ database.ref('Logic').on('value', function (snap) {
     }
 })
 
-
 $('.choice').on("click", function () {
     $this = $(this);
     database.ref('Logic').once('value').then(function (snap) {
@@ -142,3 +145,45 @@ $('.choice').on("click", function () {
         }
     })
 })
+var first = true;
+var lastChatTime = 0;
+database.ref("Chat").on("value", function (snap) {
+    if (first) {
+        snap.forEach(element => {
+            var temp = $('<p>');
+            temp.addClass("card-text");
+            temp.text(element.val().User + ": " + element.val().Message);
+            temp.appendTo($('#temp'));
+            first = false;
+
+            if (lastChatTime < element.val().Timer) {
+                lastChatTime = element.val().Timer;
+            }
+            //We can try this. IDK
+        });
+    }
+    else {
+        snap.forEach(element => {
+            if (lastChatTime < element.val().Timer) 
+            {
+                lastChatTime = element.val().Timer;
+
+                var temp = $('<p>');
+                temp.addClass("card-text");
+                temp.text(element.val().User + ": " + element.val().Message);
+                temp.appendTo($('#temp'));
+            }
+        })
+    }
+})
+
+$('#comment').bind("enterKey", function (e) {
+    database.ref("Chat").child("Message:" + moment()).set({ User: localStorage.getItem('User'), Message: $('#comment').val(), Timer: +moment() });
+
+    $('#comment').val("");
+});
+$('#comment').keyup(function (e) {
+    if (e.keyCode == 13) {
+        $(this).trigger("enterKey");
+    }
+});

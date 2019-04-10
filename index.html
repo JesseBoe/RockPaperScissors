@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
@@ -14,7 +15,7 @@
 
 <body>
     <br>
-    <div class="container">
+    <div class="container mb-4">
         <!-- Give this a bottom border for style -->
         <div class="row">
             <div class = "col-md-12 d-flex justify-content-center">
@@ -61,6 +62,19 @@
             </div>
             <div class="col-md-4 d-flex justify-content-center">
                 Ties: <span id = ties-display></span>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+
+        <div class="card bg-light mb-3 mt-4" style="max-width: 100%; max-height: 320px;">
+            <div class="card-header">Chat!</div>
+            <div class="card-body" id="temp" style="height: 300px; overflow-y: auto;">
+            </div>
+            <div class = "card-footer">
+                <div class="form-group mt-2">
+                    <input class="form-control" id="comment" type="text">
+                </div>
             </div>
         </div>
     </div>
