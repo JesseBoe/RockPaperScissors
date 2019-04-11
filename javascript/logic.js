@@ -20,9 +20,6 @@ else {
     startListening();
 }
 
-$('#temp').stop().animate({
-    scrollTop: $('#temp')[0].scrollHeight
-}, 800);
 
 function firstSignIn() {
     firebase.auth().signInAnonymously().then(function () {
@@ -52,13 +49,14 @@ function startListening() {
 }
 
 database.ref('Logic').on('value', function (snap) {
-    if (snap.val().GameFinished != null && snap.val().GameFinished != false) {
-
-        //$(".p1").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice1);
+    if (snap.val().choice1 != null && snap.val().choice2 != null && !snap.val().GameFinished ) 
+    {
+        database.ref('Logic').update({ 'choice1': null, 'choice2': null, 'GameFinished': true});
+        $(".p1").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice1);
         $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice2);
 
-        if (snap.val().id1 == localStorage.getItem("User")) {
-            if (snap.val().choice1 == 'rock' && snap.val().choice2 == 'scissor') {
+        if (snap.val().playerOne == localStorage.getItem("User")) {
+            if (snap.val().choice1 == 'rock' && snap.val().choice2 == 'scissors') {
                 Wins++;
             }
             else if (snap.val().choice1 == 'scissors' && snap.val().choice2 == 'paper') {
@@ -80,8 +78,8 @@ database.ref('Logic').on('value', function (snap) {
                 Losses++;
             }
         }
-        if (snap.val().id2 == localStorage.getItem("User")) {
-            if (snap.val().choice2 == 'rock' && snap.val().choice1 == 'scissor') {
+        if (snap.val().playerTwo == localStorage.getItem("User")) {
+            if (snap.val().choice2 == 'rock' && snap.val().choice1 == 'scissors') {
                 Wins++;
             }
             else if (snap.val().choice2 == 'scissors' && snap.val().choice1 == 'paper') {
@@ -103,43 +101,73 @@ database.ref('Logic').on('value', function (snap) {
                 Losses++;
             }
         }
-
-
         setTimeout(() => {
             $(".p1").addClass("fa-spinner fa-spin").removeClass("fa-hand-scissors fa-hand-paper fa-hand-rock")
             $(".p2").addClass("fa-spinner fa-spin").removeClass("fa-hand-scissors fa-hand-paper fa-hand-rock")
             database.ref(localStorage.getItem('User')).set({ Wins: Wins, Losses: Losses, Ties: Ties });
-            database.ref().child('Logic').set({ GameFinished: false });
-        }, 3000);
+            database.ref('Logic').update({ 'GameFinished' : false });
+        }, 2000);
     }
+})
+
+$('.join').on("click", function () {
+    $this = $(this);
+    database.ref('Logic').once('value').then(function (snap) {
+
+        if (snap.val().playerOne == localStorage.getItem('User')) {
+            alert("You are already playing as player one!");
+        }
+        else if (snap.val().playerTwo == localStorage.getItem('User')) {
+            alert("You are already playing as player two!");
+        }
+        else {
+            if ($this.attr('id') == 'p1-button') {
+                if (snap.val().playerOneTimeout < moment() - 100000 || snap.val().playerOneTimeout == null) {
+                    //Player one has been inactive. Let the user join
+                    database.ref('Logic').update({ 'playerOne' : localStorage.getItem('User'), 'playerOneTimeout' : +moment(), 'choice1' : null });
+                }
+                else {
+                    alert("Someone else is playing as player one!");
+                }
+            }
+            if ($this.attr('id') == 'p2-button') {
+                if (snap.val().playerTwoTimeout < moment() - 100000 || snap.val().playerTwoTimeout == null) {
+                    //Player one has been inactive. Let the user join
+                    database.ref('Logic').update({ 'playerTwo': localStorage.getItem('User'), 'playerTwoTimeout': +moment(), 'choice2': null });
+                }
+                else {
+                    alert("Someone else is playing as player Two!");
+                }
+            }
+        }
+    });
 })
 
 $('.choice').on("click", function () {
     $this = $(this);
     database.ref('Logic').once('value').then(function (snap) {
-        if (!snap.exists()) {
-            database.ref().child('Logic').set({ choice1: $this.attr('id'), id1: localStorage.getItem("User"), GameFinished: false })
-        }
-        else if (snap.val().id1 == localStorage.getItem("User") || snap.val().id2 == localStorage.getItem("User")) {
-            alert("You have already selected")
-        }
-        else {
-            if (!snap.val().GameFinished) {
-                if (snap.val().id1 == null) {
+
+        if (!snap.val().GameFinished) {
+            if (snap.val().playerOne == localStorage.getItem('User')) {
+                if (snap.val().choice1 == null) {
                     $(".p1").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + $this.attr('id'));
-                    database.ref().child('Logic').set({ choice1: $this.attr('id'), choice2: null, id1: localStorage.getItem("User"), id2: null, GameFinished: false })
+                    database.ref('Logic').update({ 'choice1': $this.attr('id') });
                 }
                 else {
-                    $(".p1").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + $this.attr('id'));
-                    database.ref().child('Logic').set({ choice1: snap.val().choice1, id1: snap.val().id1, choice2: $this.attr('id'), id2: localStorage.getItem("User"), GameFinished: true })
-                    //Two people have selected!
-                    if (snap.val().id1 != localStorage.getItem("User")) {
-                        $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice1);
-                    }
-                    else {
-                        $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice2);
-                    }
+                    alert("You have already selected a choice!");
                 }
+            }
+            else if (snap.val().playerTwo == localStorage.getItem('User')) {
+                if (snap.val().choice2 == null) {
+                    $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + $this.attr('id'));
+                    database.ref('Logic').update({ 'choice2': $this.attr('id') });
+                }
+                else {
+                    alert("You have already selected a choice!");
+                }
+            }
+            else {
+                alert("Select a player!")
             }
         }
     })
@@ -158,7 +186,6 @@ database.ref("Chat").on("value", function (snap) {
             if (lastChatTime < element.val().Timer) {
                 lastChatTime = element.val().Timer;
             }
-            //We can try this. IDK
         });
     }
     else {
@@ -174,6 +201,7 @@ database.ref("Chat").on("value", function (snap) {
             }
         })
     }
+    scrollChat();
 })
 
 $('#comment').bind("enterKey", function (e) {
@@ -186,3 +214,9 @@ $('#comment').keyup(function (e) {
         $(this).trigger("enterKey");
     }
 });
+
+function scrollChat(){
+    $('#temp').stop().animate({
+        scrollTop: $('#temp')[0].scrollHeight
+    }, 800);
+}
