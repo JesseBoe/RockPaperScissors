@@ -3,6 +3,15 @@ var Losses = 0;
 var Ties = 0;
 
 
+
+var url2 = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/cuisine&X-RapidAPI-Host=spoonacular-recipe-food-nutrition-v1.p.rapidapi.com&X-RapidAPI-Key=b2a438b504msh5c44b66f387d373p1fbdadjsn9a8aa9582250&Content-Type=application/x-www-form-urlencoded&ingredientList=lasagna&title=lasagna";
+$.ajax({
+    url : url2,
+    Method : "GET"
+}).then(function(response){
+    console.log(response);
+})
+
 var config = {
     apiKey: "AIzaSyAmqOqNGPGxknuE7b5sj_iy6a1OCGvKMrM",
     authDomain: "trytwo-6f07c.firebaseapp.com",
@@ -55,7 +64,7 @@ function startListening() {
 database.ref('Logic').on('value', function (snap) {
     if (snap.val().GameFinished != null && snap.val().GameFinished != false) {
 
-        $(".p1").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice1);
+        //$(".p1").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice1);
         $(".p2").removeClass("fa-spinner fa-spin").addClass("fa-hand-" + snap.val().choice2);
 
         if (snap.val().id1 == localStorage.getItem("User")) {
